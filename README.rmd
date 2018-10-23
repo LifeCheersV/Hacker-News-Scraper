@@ -6,7 +6,6 @@ output: rmarkdown::github_document
 
 Get latest Hacker News, including their Title and Domain from <https://news.ycombinator.com/>
 
-
 #### calling "rvest" Library
 
 ```{r}
