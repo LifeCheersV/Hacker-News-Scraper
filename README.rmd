@@ -46,5 +46,3 @@ data1 <- data.frame (TITLE = title, LINK_DOMAIN = domain, AGE = age)
 library(knitr)
 kable(data1[1:6, ], caption = "Top Hacker News")
 ```
- 
-
