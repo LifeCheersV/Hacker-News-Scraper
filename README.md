@@ -1,41 +1,69 @@
-# Hacker News - Scraper
 
-## Installation
+### Description
 
-You can install `rvest` from [CRAN](https://cran.r-project.org/package=rvest) with:
+Get latest Hacker News, including their Title and Domain from <https://news.ycombinator.com/>
 
-``` r
-install.packages('rvest')
-```
-## Example
-
-Get Current scores of Hacker News:
+#### calling "rvest" Library
 
 ``` r
 library(rvest)
+```
 
-#read html code:
+    ## Loading required package: xml2
+
+#### Reading html file
+
+``` r
 mainpage <- read_html ('https://news.ycombinator.com/')
+```
 
-#read html node for Title:
+#### Extracting Title node
+
+``` r
 title <- html_nodes(mainpage, 'td:nth-child(3) > a')  %>% html_text()
+head(title)
+```
 
-#output
-title
+    ## [1] "Coinbase is launching support for the USDC stablecoin"     
+    ## [2] "Motorola and iFixit partner to sell phone repair kits"     
+    ## [3] "Jepsen: MongoDB 3.6.4"                                     
+    ## [4] "Multithreading Rust and Wasm"                              
+    ## [5] "Deterministic quantum teleportation through fiber channels"
+    ## [6] "Why Are Japan’s Cherry Blossom Trees Blooming in Fall?"
 
-#read html node for Link-Domain:
+#### Extracting Domain node
+
+``` r
 domain <- html_nodes(mainpage, 'td:nth-child(3) > span > a > span')  %>% html_text()
+head(domain)
+```
 
-#output
-domain
+    ## [1] "coinbase.com"       "ifixit.org"         "jepsen.io"         
+    ## [4] "rustwasm.github.io" "sciencemag.org"     "smithsonianmag.com"
 
-#read html node for Age of the link:
+#### Extracting Age node
+
+``` r
 age <- html_nodes(mainpage, 'span.age')  %>% html_text()
+head(age)
+```
 
-#output
-age
+    ## [1] "56 minutes ago" "3 hours ago"    "2 hours ago"    "3 hours ago"   
+    ## [5] "1 hour ago"     "2 hours ago"
 
-## Create Dataframe for further analysis:
+#### Saving data in a Dataframe and viewing for further analysis
 
-data1 <- data.frame (title = title, link_domain = domain, Age = age)
-View(data1)
+``` r
+data1 <- data.frame (TITLE = title, LINK_DOMAIN = domain, AGE = age)
+library(knitr)
+kable(data1[1:6, ], caption = "Top Hacker News")
+```
+
+| TITLE                                                      | LINK\_DOMAIN       | AGE            |
+|:-----------------------------------------------------------|:-------------------|:---------------|
+| Coinbase is launching support for the USDC stablecoin      | coinbase.com       | 56 minutes ago |
+| Motorola and iFixit partner to sell phone repair kits      | ifixit.org         | 3 hours ago    |
+| Jepsen: MongoDB 3.6.4                                      | jepsen.io          | 2 hours ago    |
+| Multithreading Rust and Wasm                               | rustwasm.github.io | 3 hours ago    |
+| Deterministic quantum teleportation through fiber channels | sciencemag.org     | 1 hour ago     |
+| Why Are Japan’s Cherry Blossom Trees Blooming in Fall?     | smithsonianmag.com | 2 hours ago    |

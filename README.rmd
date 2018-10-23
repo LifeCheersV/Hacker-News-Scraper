@@ -1,0 +1,51 @@
+---
+output: rmarkdown::github_document
+---
+
+### Description
+
+Get latest Hacker News, including their Title and Domain from <https://news.ycombinator.com/>
+
+
+#### calling "rvest" Library
+
+```{r}
+library(rvest)
+```
+
+#### Reading html file
+
+```{r}
+mainpage <- read_html ('https://news.ycombinator.com/')
+```
+
+#### Extracting Title node
+
+```{r}
+title <- html_nodes(mainpage, 'td:nth-child(3) > a')  %>% html_text()
+head(title)
+```
+
+#### Extracting Domain node
+
+```{r}
+domain <- html_nodes(mainpage, 'td:nth-child(3) > span > a > span')  %>% html_text()
+head(domain)
+```
+
+#### Extracting Age node
+
+```{r}
+age <- html_nodes(mainpage, 'span.age')  %>% html_text()
+head(age)
+```
+
+#### Saving data in a Dataframe and viewing for further analysis
+
+```{r}
+data1 <- data.frame (TITLE = title, LINK_DOMAIN = domain, AGE = age)
+library(knitr)
+kable(data1[1:6, ], caption = "Top Hacker News")
+```
+ 
+
